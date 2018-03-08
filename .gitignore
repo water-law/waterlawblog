@@ -1,0 +1,14 @@
+.idea/
+.hg
+.hgignore
+env/
+__pycache__/
+*.pyc
+file_handler.log
+*.rdb
+static/
+whoosh_index/
+celerybeat-schedule
+file_handler.log.*
+fabfile.py
+sites/init_data.py

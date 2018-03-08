@@ -1,0 +1,13 @@
+<article class="articles">
+    <header class="entry_header">
+        <h1 class="entry_title"><a href="/articles/{{ post.id }}" class="title_font">{{ post.title }}</a></h1>
+        <div class="entry_meta">
+            <span class="post_category"><a href="#">{{ post.category.name }}</a></span>
+            <span class="post_date"><a href="#">{{ post.create_time|date:"Y年m月d日 H:m" }}</a></span>
+            <span class="post_author"><a href="#">{{ post.author.username }}</a></span>
+            <span class="comments_link"><a href="{{ post.get_absolute_url }}">{{post.comment_set.count}} 评论</a></span>
+            <span class="views_count"><a href="{{ post.get_absolute_url }}">{{post.views}} 阅读</a></span>
+        </div>
+    </header>
+    <div class="entry_content">{{ post.abstract|safe }}</div>
+</article>

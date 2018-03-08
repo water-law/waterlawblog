@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-cn" class="do-cke">
+<head>
+</head>
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+<link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/dpl.css" rel="stylesheet">
+<link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/bui.css" rel="stylesheet">
+<style>
+    .send_code {display:inline-block; width:120px; height:26px; line-height:26px;background-color:#dc3c00;text-align:center;color:#fff;}
+    .auth_info {height:40px;background-color:#ff6d28;text-align:center;line-height:40px;font-size:16px;color:#fff;}
+</style>
+<body>
+{% if message %}
+    <div class="auth_info">
+        <span id="error_msg">{{ message }}</span>
+        <!--<button></button>-->
+    </div>
+{% endif %}
+<br>
+<div id="main">
+    <div class="container">
+        <div class="flow-steps">
+            <ol class="num4">
+                {% if not step %}
+                    <li class="first current">填写手机号</li>
+                    <li class="">填写用户名和密码</li>
+                    <li class="last">注册成功</li>
+                {% elif step == 2 %}
+                    <li class="first">填写手机号</li>
+                    <li class="current">填写用户名和密码</li>
+                    <li class="last">注册成功</li>
+                {% elif step == 3 %}
+                    <li class="first">填写手机号</li>
+                    <li class="">填写用户名和密码</li>
+                    <li class="last current">注册成功</li>
+                {% endif %}
+            </ol>
+        </div>
+        <div class="register-info">
+            <form action="{% if not step %}/accounts/register/next{% elif step == 2 %}/accounts/register{% else %}javascript:void(0){% endif %}" method="post">
+                {% csrf_token %}
+                {% if not step %}
+                    <ul class="info">
+                        <li>
+                            <span>手机号：</span>
+                            <span>
+                                <input id="phone_number" type="number" name="phone_number">
+                            </span>
+                        </li>
+                        <br>
+                        <!--<li class="vcode">-->
+                        <!--<span>验证码：</span>-->
+                        <!--<div></div>-->
+                        <!--</li>-->
+                        <li>
+                            <span>手机验证码：</span>
+                            <input id="vmobile_code" type="number" name="vmobile_code">
+                            <a href="javascript:void(0)" class="send_code">获取验证码</a>
+                        </li>
+                        <br>
+                        <li>
+                            <button class="button button-danger">下一步</button>
+                        </li>
+                    </ul>
+                {% elif step == 2 %}
+                    <ul class="info">
+                        <li>
+                            <span>登录账户：</span>
+                            <span>
+                                <input id="username" name="username">
+                            </span>
+                        </li>
+                        <br>
+                        <li>
+                            <span>密码：</span>
+                            <span>
+                                <input id="password" type="password" name="password1">
+                            </span>
+                        </li>
+                        <br>
+                        <li>
+                            <span>确认密码：</span>
+                            <span>
+                                <input id="check_password" type="password" name="password2">
+                            </span>
+                        </li>
+                        <br>
+                        <li>
+                            <button id="btn_register" class="button button-danger">注册</button>
+                        </li>
+                    </ul>
+                {% elif step == 3 %}
+                    <p>注册成功！</p>
+                <a href="{% url 'login' %}">登录</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+<div class="footer"></div>
+<script src="https://code.jquery.com/jquery-1.8.1.min.js"></script>
+<script src="https://g.alicdn.com/bui/seajs/2.3.0/sea.js"></script>
+<script src="https://g.alicdn.com/bui/bui/1.1.10/config.js"></script>
+<script src="{% static 'blog/js/register.js' %}"></script>
+</body>
+</html>
