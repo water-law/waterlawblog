@@ -112,10 +112,6 @@ DATABASES = {
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2','mysql', 'sqlite3' or 'oracle'
 
-        'USER': 'postgres',  # Your db user name, Not used with sqlite3
-
-        'PASSWORD': 'postgres',  # Your db password, Not used with sqlite3
-
         'NAME': 'blog',  # Your db name, Or path to database file if using sqlite3
 
         'HOST': '',  # Your db host, set to empty string('') for default for localhost,  Not used with sqlite3

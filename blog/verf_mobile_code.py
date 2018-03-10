@@ -7,12 +7,24 @@ from aliyunsdk.aliyunsdkdysmsapi.request.v20170525 import SendSmsRequest
 
 from misaka.models import AliyunAccount, SmsSign, SmsTemplate, SmsMessage
 
-region = "cn-hangzhou"
-aliyun_account = AliyunAccount.objects.get(name="misaka")
-acs_client = AcsClient(aliyun_account.app_id, aliyun_account.app_secret, region)
+
+def get_acs_client(aliyun_account_name):
+    region = "cn-hangzhou"
+    try:
+        aliyun_account = AliyunAccount.objects.get(name=aliyun_account_name)
+    except AliyunAccount.DoesNotExist:
+        aliyun_account = None
+    if aliyun_account is None:
+        return
+    else:
+        return AcsClient(aliyun_account.app_id, aliyun_account.app_secret, region)
 
 
 def send_sms(business_id, phone_number, sign_name, template_code, template_param=None):
+    acs_client = get_acs_client("misaka")
+    if acs_client is None:
+        print("没有配置阿里云帐号")
+        return
     smsRequest = SendSmsRequest.SendSmsRequest()
     smsRequest.set_TemplateCode(template_code)
     if template_param is not None:

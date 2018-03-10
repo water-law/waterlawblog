@@ -25,14 +25,14 @@ class APIError(Exception):
 
 
 def _encode_params(**kw):
-    '''
+    """
     do url-encode parameters
 
     >>> _encode_params(a=1, b='R&D')
     'a=1&b=R%26D'
     >>> _encode_params(a=u'\u4e2d\u6587', b=['A', 'B', 123])
     'a=%E4%B8%AD%E6%96%87&b=A&b=B&b=123'
-    '''
+    """
     args = []
     for k, v in kw.items():
         if isinstance(v, basestring):
@@ -50,7 +50,6 @@ def _encode_params(**kw):
 
 
 class APIClient(object):
-
     def __init__(
             self,
             app_key,
@@ -58,7 +57,7 @@ class APIClient(object):
             redirect_uri=None,
             response_type='code',
             domain='api.github.com',
-            ):
+    ):
         self.client_id = str(app_key)
         self.client_secret = str(app_secret)
         self.redirect_uri = redirect_uri
@@ -81,15 +80,22 @@ class APIClient(object):
                 'OAuth2 request')
         response_type = kw.pop('response_type', 'code')
         return '%s%s?%s' % (self.auth_url, 'authorize',
-                          _encode_params(client_id=self.client_id,
-                                         response_type=response_type,
-                                         redirect_uri=redirect, **kw))
+                            _encode_params(client_id=self.client_id,
+                                           response_type=response_type,
+                                           redirect_uri=redirect, **kw))
 
     # noinspection PyMethodMayBeStatic
     def _parse_access_token(self, r):
-        if isinstance(r.content, bytes):
-            r = r.content.decode()
-        access_token = r.split('&')[0].split('=')[1]
+        content = r.content
+        if isinstance(content, bytes):
+            content = content.decode()
+        elif isinstance(content, unicode):
+            content = content.encode()
+        elif isinstance(content, basestring):
+            content = content
+        else:
+            content = str(content)
+        access_token = content.split('&')[0].split('=')[1]
         current = int(time.time())
         expires = 0.0 + current
         return dict(access_token=access_token,
@@ -105,20 +111,12 @@ class APIClient(object):
                 'OAuth2 request')
 
         r = requests.get('%s%s' % (self.auth_url, 'access_token'),
-                     params={
-                         "client_id": self.client_id,
-                         "client_secret": self.client_secret,
-                         "code":code,
-                         "redirect_uri": redirect})
+                         params={
+                             "client_id": self.client_id,
+                             "client_secret": self.client_secret,
+                             "code": code,
+                             "redirect_uri": redirect})
         return self._parse_access_token(r)
 
     def refresh_token(self, refresh_token):
         pass
-
-
-
-
-
-
-
-

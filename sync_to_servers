@@ -62,8 +62,6 @@ base_excludes = [
     "*.swp",
     "list.tmp",
     "outside_sync_to_servers",
-    "./static/index/img/logo.png",
-    "./static/auser/logo.png",
     "d.*js",
     "./mddbd/*/mddb.conf",
     "./frontend/*",
@@ -76,7 +74,9 @@ base_excludes = [
     "./AndroidApp",
     "whoosh_index",
     "code-img",
-    "file_handler.log*"
+    "file_handler.log*",
+    ".git",
+    ".gitignore",
 ]
 
 remotes = {
