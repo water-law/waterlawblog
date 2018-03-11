@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def run_command(prog, args):
     if sys.version_info[0] < 3:
-        arg_list = (prog.decode("utf-8"), ) + tuple(shlex.split(args))
+        arg_list = (prog.decode("utf-8"),) + tuple(shlex.split(args))
     else:
-        arg_list = (prog, ) + tuple(shlex.split(args))
+        arg_list = (prog,) + tuple(shlex.split(args))
     print("Running command: ", prog, arg_list)
     return os.execv(prog, arg_list)
 
@@ -35,7 +35,7 @@ def run_command(prog, args):
 def get_ip():
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            s.connect(("14.215.177.38",80))
+            s.connect(("14.215.177.38", 80))
             ip, _ = s.getsockname()
         return ip
     except:
@@ -73,7 +73,7 @@ class BaseDeployInformation(object):
 
     sitename = ("127.0.0.1",)
     api_sitename = tuple()
-    static_sitename = ("localhost", )
+    static_sitename = ("localhost",)
 
     backend_servers = [
         ("127.0.0.1", 8000),
@@ -108,7 +108,7 @@ class DeveloperDeployInformation(BaseDeployInformation):
     @property
     def sitename(self):
         ip = get_ip()
-        return ("127.0.0.1",ip)
+        return ("127.0.0.1", ip)
 
 
 class EarthDeployInformation(BaseDeployInformation):
@@ -116,8 +116,8 @@ class EarthDeployInformation(BaseDeployInformation):
     debug = False
     net_ip = ["47.97.160.187"]
 
-    sitename = ("waterlaw.cn", )
-    static_sitename = ("waterlaw.cn", )
+    sitename = ("waterlaw.cn",)
+    static_sitename = ("waterlaw.cn",)
 
 
 def choice_deploy():
@@ -140,7 +140,7 @@ def create_deploy_information():
 
     deploy_info = None
     if os.path.exists(product_txt):
-        type_name = io.open(product_txt, "r", encoding = "utf-8").read().strip()
+        type_name = io.open(product_txt, "r", encoding="utf-8").read().strip()
         for obj_name in globals():
             if obj_name.endswith("DeployInformation"):
                 if globals()[obj_name].name == type_name:
@@ -152,3 +152,10 @@ def create_deploy_information():
     if deploy_info not in sys.path:
         sys.path.append(deploy_info.base_dir)
     return deploy_info
+
+
+def email_host_password():
+    email_txt = "/home/zjp/waterlawblog/email.txt"
+    if os.path.exists(email_txt):
+        return io.open(email_txt, mode="r", encoding="utf-8").read().strip()
+    return ""

@@ -12,3 +12,5 @@ celerybeat-schedule
 file_handler.log.*
 fabfile.py
 sites/init_data.py
+product.txt
+email.txt
