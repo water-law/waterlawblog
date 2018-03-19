@@ -1,18 +1,37 @@
-目前实现的功能：
-1. 导航条
-2. 注册与登录
-2. 写博客
-3. 显示文章摘要
-4. 增加 markdown 语法支持
-5. 简单提交评论
-6. 自定义模板（首页中右侧的 最近文章，归档，分类， 在用标签）
+[开发环境]
+python3 + Django1.11.4 + virtualenv
 
-尚未实现的功能：
-1. 权限认证
-2. markdown 编辑器的页面太丑了
-3. 表单校验
-4. 图片验证码
+[数据库]
+pgsql9.6 + redis(可选)
+启动 pgsql 和 redis
+进入 pgsql 命令行模式， psql blog
+将系统用户添加为数据库用户
+CREATE ROLE xxx WITH LOGIN SUPERUSER; // xxx是当前用户名
+启用 HStore 插件
+CREATE EXTENSION IF NOT EXISTS hstore;
+
+[安装 python 相关库]
+进入项目根目录， 创建虚拟环境
+pip3 install virtualenv
+virtualenv -p python3.6 env
+. ./env/bin/activate
+pip install -r requirements.txt
+
+[执行数据库迁移文件]
+激活虚拟环境，
+./manage.py migrate
+
+[本地运行]
+./manage.py runserver
+在浏览器输入 127.0.0.1:8000即可访问
 
 [nginx 部署]
 在 /etc/nginx/conf.d
 sudo ln -s /home/zjp/waterlawblog/soya/conf/nginx/blog_187.conf /etc/nginx/conf.d/blog_187.conf
+重启 nginx
+nginx -s reload
+
+进入项目根目录， 激活虚拟环境
+./manage.py runserver
+
+访问 waterlaw.cn
