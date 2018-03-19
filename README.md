@@ -42,6 +42,13 @@ pip install -r requirements.txt
 
 在浏览器输入 127.0.0.1:8000即可访问
 
+**[同步本地文件到服务器]**
+
+进入本地项目根目录， 激活虚拟环境
+
+./sync_to_server 187
+
+
 **[nginx 部署]**
 
 在 /etc/nginx/conf.d
@@ -52,7 +59,9 @@ sudo ln -s /home/zjp/waterlawblog/soya/conf/nginx/blog_187.conf /etc/nginx/conf.
 
 nginx -s reload
 
-进入项目根目录， 激活虚拟环境
+进入服务器项目根目录， 激活虚拟环境
+创建 product.txt 文件， 写入服务器的 ip
+创建 email.txt 文件， 写入 163 邮箱的授权码
 
 ./manage.py runserver
 
