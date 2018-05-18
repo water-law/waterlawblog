@@ -6,9 +6,20 @@ import django.utils.timezone as timezone
 from django.urls import reverse
 
 
+class Github(models.Model):
+    """ Github """
+    login_name = models.CharField(max_length=30, verbose_name='Github 登录名')
+    github_id = models.IntegerField(verbose_name='Github 用户ID')
+    avatar_url = models.URLField(verbose_name='头像', blank=True)
+
+    def __str__(self):
+        return "Github<Github:{}>".format(self.login_name)
+
+
 class User(AbstractUser):
     """ 用户 """
     phone_number = models.CharField(max_length=13, verbose_name="手机号")
+    github = models.ForeignKey(Github, verbose_name='与用户关联的 Github', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return "用户<用户名:{}>".format(self.username)

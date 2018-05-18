@@ -29,6 +29,14 @@ class IndexView(ListView):
     context_object_name = 'post_list'
     paginate_by = 5
 
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated():
+            qs = Post.objects.none()
+        else:
+            qs = Post.objects.filter(author=user)
+        return qs
+
     def get_context_data(self, **kwargs):
         """
         在视图函数中将模板变量传递给模板是通过给 render 函数的 context 参数传递一个字典实现的，
@@ -449,7 +457,10 @@ class ArchivesView(ListView):
     def get_queryset(self):
         year = self.kwargs.get('year')
         month = self.kwargs.get('month')
-        return super(ArchivesView, self).get_queryset().filter(create_time__year=year, create_time__month=month)
+        user = self.request.user
+        if not user.is_authenticated():
+            return Post.objects.none()
+        return super(ArchivesView, self).get_queryset().filter(create_time__year=year, create_time__month=month, author=user)
 
 
 class CategoryView(ListView):
@@ -459,8 +470,11 @@ class CategoryView(ListView):
     context_object_name = 'post_list'
 
     def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated():
+            return Post.objects.none()
         category = get_object_or_404(Category, pk=self.kwargs.get('pk'))
-        return super(CategoryView, self).get_queryset().filter(category=category)
+        return super(CategoryView, self).get_queryset().filter(category=category, author=user)
 
 
 class TagView(ListView):
@@ -470,8 +484,11 @@ class TagView(ListView):
     context_object_name = 'post_list'
 
     def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated():
+            return Post.objects.none()
         tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
-        return super(TagView, self).get_queryset().filter(tags=tag)
+        return super(TagView, self).get_queryset().filter(tags=tag, author=user)
 
 
 def get_image_path(request):
