@@ -199,7 +199,7 @@ LOGGING = {
         'file_handler': {
              'level': 'ERROR',
              'class': 'logging.handlers.TimedRotatingFileHandler',
-             'filename': os.path.join(BASE_DIR, 'file_handler.log'),
+             'filename': os.path.join(BASE_DIR, 'logs/file_handler.log'),
              'formatter': 'verbose'
         },  # 用于文件输出
         'console':{

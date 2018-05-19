@@ -78,6 +78,9 @@ base_excludes = [
     ".git",
     ".gitignore",
     "email.txt",
+    "README.md",
+    "LICENSE",
+    "logs",
 ]
 
 remotes = {
