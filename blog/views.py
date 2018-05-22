@@ -32,7 +32,7 @@ class IndexView(ListView):
     def get_queryset(self):
         user = self.request.user
         if not user.is_authenticated():
-            qs = Post.objects.none()
+            qs = Post.objects.filter(author__username='Misaka')
         else:
             qs = Post.objects.filter(author=user)
         return qs
