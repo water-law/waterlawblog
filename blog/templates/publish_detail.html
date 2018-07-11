@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock title %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <main class="span16">
+                <article class="articles">
+                    <header class="entry_header">
+                        <h1 class="entry_title"><a href="{{ post.get_absolute_url }}"
+                                                   class="title_font">{{ post.title }}</a></h1>
+                        <div class="entry_meta">
+                            <span class="post_category"><a href="#">{{ post.category.name }}</a></span>
+                            <span class="post_date"><a href="#">{{ post.create_time|date:"Y年m月d日 H:m" }}</a></span>
+                            <span class="post_author"><a href="#">{{ post.author.username }}</a></span>
+                            <span class="comments_link"><a
+                                    href="{{ post.get_absolute_url }}">{{ post.comment_set.count }} 评论</a></span>
+                            <span class="views_count"><a
+                                    href="{{ post.get_absolute_url }}">{{ post.views }} 阅读</a></span>
+                            {% if post.author == user %}
+                            <span class="post_update"><a
+                                    href="{% url 'update' post.pk %}">修改</a></span>
+                            {% endif %}
+                        </div>
+                    </header>
+                    <div class="entry_content">{{ post.body|safe }}</div>
+                </article>
+                <section class="comment_area">
+                    {% comment %}<div class="row">
+                        <div class="span12">
+                            <span>验证码：</span>
+                            <span><input id="send_image_code" name="image_code"></span>
+                            <span>
+                            <img src="/passports/captcha" alt="passport"
+                                 style="width:120px;height:30px" onclick="this.src='/passports/captcha?d='+new Date().getTime()">
+                        </span>
+                        </div>
+                    </div>{% endcomment %}
+                    <div class="post_comment">
+                        <h3 class="post_comment_title">发表评论</h3>
+                        <form action="/comments/publish/{{ post.id }}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <!--
+                                <div class="span12 fix">
+                                    <span>评论人</span>
+                                    <span><input name="name"></span>
+                                </div>-->
+                                <div class="span14">
+                                    <span class="span14">评论内容</span>
+                                    <span>
+                                    <textarea name="content" class="content" style="width:99%;height: 200px;border: 1px solid black;"></textarea>
+                                </span>
+                                    <div class="span13">&nbsp;</div>
+                                    <span class="post_comment_btn">
+                                    <button class="button">发表</button>
+                                </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="comment_list_panel">
+                        <h3>评论列表, 共
+                            <span>{{ comment_list.count }}</span> 条评论
+                        </h3>
+                        <ul>
+                            {% for comment in comment_list %}
+                                <li>
+                                    <span>{{ comment.tourist.username }} 评论于</span>
+                                    <time>{{ comment.create_time|date:"Y年m月d日 H:m" }}</time>
+                                    <article>{{ comment.content }}</article>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </section>
+            </main>
+
+        </div>
+    </div>
+{% endblock main %}
+
+{% block aside-right %}
+    <aside class="span8">
+        <div class="widget widget_recent_posts">
+            <h3 class="widget_title">文章目录</h3>
+            {{ post.toc|safe }}
+        </div>
+    </aside>
+{% endblock %}

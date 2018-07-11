@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load blog_tags %}
+
+{% block title %}
+    Water Law
+{% endblock title %}
+
+{% block main %}
+    <main>
+        {% for post in post_list %}
+            {% include "article.html" %}
+        {% endfor %}
+    </main>
+{% endblock %}
+{% block aside-right %}
+    <aside>
+        <div>
+            <h3>最近文章</h3>
+            {% get_recent_posts user.username as recent_posts_list %}
+            <ul>
+                {% for post in recent_posts_list %}
+                    <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+                {% empty %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h3>归档</h3>
+            {% archives user.username as date_list %}
+            <ul>
+                {% for date in date_list %}
+                    <li><a href="{% url 'archives' date.year date.month %}">{{ date.year }}
+                        年 {{ date.month }} 月</a></li>
+                {% empty %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h3>分类</h3>
+            {% get_categories user.username as category_list %}
+            <ul>
+                {% for category in category_list %}
+                    <li>
+                        <a href="{% url 'category' category.pk %}">{{ category.name }}({{ category.num_posts }})</a>
+                    </li>
+                {% empty %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h3>在用标签</h3>
+            {% get_tags user.username as tags_list %}
+            <ul>
+                {% for tag in tags_list %}
+                    <li><a href="{% url 'tag' tag.pk %}">{{ tag.name }}</a></li>
+                {% empty %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h3>RSS 订阅</h3>
+            <ul>
+                <li><a href="{% url 'rss' %}">RSS</a></li>
+            </ul>
+        </div>
+    </aside>
+{% endblock aside-right %}
+{% block pagination %}
+{#    {% if is_paginated %}#}
+{#    <div class="pagination" style="text-align: center">#}
+{#        <span class="page-links">#}
+{#            {% if page_obj.has_previous %}#}
+{#                <a href="?page={{ page_obj.previous_page_number }}">上一页</a>#}
+{#            {% endif %}#}
+{#            {% if page_obj.has_next %}#}
+{#                <a href="?page={{ page_obj.next_page_number }}">下一页</a>#}
+{#            {% endif %}#}
+{#            <span class="page-current">#}
+{#                第 {{ page_obj.number }} 页 ，共 {{ page_obj.paginator.num_pages }} 页。#}
+{#            </span>#}
+{#        </span>#}
+{#    </div>#}
+{#    {%endif%}#}
+    {% if is_paginated %}
+        <div class="pagination" style="text-align: center">
+            {% if first %}
+                <a href="?page=1"><button>1</button></a>
+            {% endif %}
+            {% if left %}
+                {% if left_has_more %}
+                    <span>...</span>
+                {% endif %}
+                {% for i in left %}
+                    <a href="?page={{ i }}"><button>{{ i }}</button></a>
+                {% endfor %}
+            {% endif %}
+            <a href="?page={{ page_obj.number }}" style="color: red"><button>{{ page_obj.number }}</button></a>
+            {% if right %}
+                {% for i in right %}
+                    <a href="?page={{ i }}"><button>{{ i }}</button></a>
+                {% endfor %}
+                {% if right_has_more %}
+                    <span>...</span>
+                {% endif %}
+            {% endif %}
+            {% if last %}
+                <a href="?page={{ paginator.num_pages }}"><button>{{ paginator.num_pages }}</button></a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock pagination %}

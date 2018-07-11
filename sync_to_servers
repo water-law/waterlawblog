@@ -1,0 +1,214 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import absolute_import
+from __future__ import division
+
+import io
+import os
+import re
+import sys
+import json
+import logging
+import fnmatch
+import argparse
+import compileall
+from collections import Iterable
+from contextlib import  contextmanager
+
+logger = logging.getLogger(__name__)
+
+
+base_includes = [
+    "manage.py",
+]
+
+base_excludes = [
+    "sync_to_servers",
+    "*.pid",
+    ".idea",
+    "__pycache__",
+    "syncts*",
+    "celerybeat-schedule",
+    "./upload",
+    "./report",
+    "django.log",
+    "dberror.log",
+    "faillog.log",
+    "sql_query.log",
+    "./redis-data",
+    "./pgsql-data",
+    "./pysp",
+    "./logs",
+    "./pd_data",
+    ".hg",
+    ".hgignore",
+    ".hgsub",
+    ".hgsubstate",
+    ".hgtags",
+    "backup",
+    "./importing",
+    "./native",
+    "./hgoldfish/mddb/build",
+    "./mddb-data",
+    "*egg-info",
+    "cpp",
+    "*.egg",
+    "build-mddb-unknown-Debug",
+    "build-mddb-Desktop-Debug",
+    "refresh_cdn.py",
+    "./scripts",
+    "*.swp",
+    "list.tmp",
+    "outside_sync_to_servers",
+    "./static/index/img/logo.png",
+    "./static/auser/logo.png",
+    "d.*js",
+    "./mddbd/*/mddb.conf",
+    "./frontend/*",
+    "*.pyc",
+    "./env",
+    "*.pyo",
+    "dump.rdb",
+    "product.txt",
+    "./worktable",
+    "./AndroidApp",
+    "whoosh_index",
+    "code-img"
+]
+
+remotes = {
+    "187": "zjp@47.97.160.187:/home/zjp/waterlawblog/",
+}
+
+
+def base_filter(filter_list=None, ex=True):
+    if ex:
+        match_list = base_excludes
+    else:
+        match_list = base_includes
+    match_list = json.loads(json.dumps(match_list))
+    if filter_list is not None and isinstance(filter_list, Iterable):
+        match_list.extend(filter_list)
+
+    def f(*p):
+        if not isinstance(p, Iterable):
+            p = [p]
+        for m in match_list:
+            if True in [fnmatch.fnmatch(i, m) for i in p]:
+                return True
+        return False
+
+    return f
+
+
+def _get_sync_file(f, path, in_filter, ex_filter):
+    filename = os.path.basename(path)
+    if not in_filter(filename, path) and ex_filter(filename, path):
+        return
+
+    if os.path.isfile(path):
+        f.write(path + os.linesep)
+    elif os.path.isdir(path):
+        cur_file = os.listdir(path)
+        for p in cur_file:
+            abs_path = os.path.join(path, p)
+            if p in ["commands", "migrations"]:
+                _get_sync_file(f, abs_path, in_filter, base_filter())
+            else:
+                _get_sync_file(f, abs_path, in_filter, ex_filter)
+
+
+@contextmanager
+def file_manager(file):
+    f = io.open(file, "w")
+    try:
+        yield f
+    finally:
+        f.close()
+        os.remove(file)
+        
+
+def sync_to_server(pwd, sync_pwd, remote_name, only_compile=True):
+    remote_server = remotes[remote_name]
+    in_filter = base_filter(ex=False)
+    ex_filter = base_filter()
+
+    with io.open("list.tmp", "w") as f:
+        _get_sync_file(f, sync_pwd, in_filter, ex_filter)
+
+    cmd = "rsync -avOL --checksum --files-from list.tmp {local} {remote}".format(
+        local = pwd,
+        remote = remote_server,
+    )
+    logger.debug(cmd)
+    os.system(cmd)
+    os.remove("list.tmp")
+
+
+def prepare():
+    os.environ['DJANGO_SETTINGS_MODULE'] = "sites.settings"
+    from django.core.management import execute_from_command_line
+    execute_from_command_line(["./manage.py", "collectstatic", "--noinput", '-i', 'node_modules'])
+
+
+def compile():
+    p_version = sys.version_info
+    if p_version.major != 3:
+        assert False, "python版本不是3"
+    compileall.compile_dir(
+        ".",
+        rx=re.compile("commands|migrations"),
+        quiet=1,)
+
+
+def cur_path(a, b):
+    if b.startswith("/"):
+        assert False, "不可用"
+        # echo = False
+        # while not echo:
+        #     print("确认以绝对路径方式上传(y/n)")
+        #     str = raw_input()
+        #     if str in ['y', "Y"]:
+        #         echo = True
+        #     elif str in ['n', 'N']:
+        #         assert False, "用户已取消"
+        # return "/", b
+    else:
+        return ".", os.path.join(a, b)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='把代码同步到服务器。')
+    parser.add_argument("names", metavar='server_name', nargs='*', help='服务器名称')
+    parser.add_argument("-e", "--excludes", nargs='+', help='排除服务器')
+    parser.add_argument("-p", "--path", help='指定路径')
+    args = parser.parse_args()
+    prepare()
+    compile()
+
+    logging.basicConfig(level = logging.INFO)
+    logger.name = "sync_to_servers"
+
+    pwd = "."
+    sync_pwd = "."
+
+    if args.path:
+        pwd, sync_pwd = cur_path(pwd, args.path)
+
+    if args.excludes:
+        for e in args.excludes:
+            try:
+                remotes.pop(e)
+            except KeyError:
+                print("{} not in servers".format(e))
+
+    if not args.names:
+        for remote in remotes.keys():
+            sync_to_server(pwd, sync_pwd, remote)
+    else:
+        for name in args.names:
+            if name in remotes:
+                sync_to_server(pwd, sync_pwd, name)
+

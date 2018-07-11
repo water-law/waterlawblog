@@ -1,0 +1,99 @@
+body {line-height: 25px;}
+* a {text-decoration: none; color:#CFE0EE;}
+a:hover {color:#F09C42;}
+#wrapper {}
+* {font-size: 18px;}
+/* 导航条样式开始 */
+.cus_nav ul li {float: left; margin:0 6px; padding: 10px 22px; display: inline-block;list-style:none;}
+.cus_nav ul li a {display:block;padding: 8px 22px;color:#fff}
+
+.logo a, .cus_nav li a {
+
+    color:#fff;
+    font-family: "宋体";
+    padding-right: 1em;
+    padding-left: 1em;
+    margin-left: 2px;
+    display: block;
+}
+.logo a:hover, .logo.hover a {
+
+    background-repeat:repeat-x;
+    background-position: center top;
+    text-decoration: none;
+    color:#FF7B0E;
+}
+.cus_nav li a:hover, .cus_nav li.hover a, .horizon_align a:hover {
+
+    background-repeat:repeat-x;
+    background-position: center top;
+    text-decoration: none;
+    color:#FF7B0E;
+}
+.horizon_align a {
+    color:#666;
+    font-family: "宋体";
+}
+.span_clear_margin {margin: 0}
+.logo {text-align: center;}
+.logo_size {font-size:32px;}
+.cus_nav_left {padding:18px 17px 18px 0;}
+.cus_navbar {background-color:#5bc0de;}
+.cus_nav_height {height:61px; }
+.cus_nav_right {position: relative; left: 20px; padding:18px 0 18px 17px;}
+.horizon_align {text-align: center;}
+.cus_login, .cus_register {background-color: #fff; color: #666;padding: 6px 22px; margin: 0 6px; border-radius: 100px;}
+/* 导航条样式结束 */
+
+/* 发布文章的表单样式开始 */
+.main {margin-top:25px;}
+.post_title {margin-bottom:25px;position:relative;left:40%;}
+.cus_container {margin: 0 384.5px;padding:0 70px;}
+/* 发布文章的表单样式结束 */
+
+/* post_success.html start */
+.title_font {font-size:1.9em;color:black;}
+.entry_meta span a {font-size:15px;color:black;}
+/** 伪元素 **/
+.post_category a:after {content:'.';}
+.post_date a:after {content:'.';}
+.post_author a:after {content:'.';}
+.comments_link a:after {content:'.';}
+.articles {padding: 20px 20px 0;}
+.entry_title {text-align:center;margin-bottom:20px;}
+.entry_meta {text-align:center;margin-bottom:20px;}
+
+/* post_success.html end */
+
+/** index.html 自定义模板样式开始 **/
+.widget {padding:30px 0 0;}
+.widget_title {margin-bottom:20px;padding:10px 0 0;}
+.widget_recent_posts ul{padding-left: 20px;}
+.widget_recent_posts ul li {margin-bottom:10px;}
+.widget_recent_posts ul li a{color:black;text-decoration:none;}
+
+
+.widget_archives ul{padding-left: 20px;}
+.widget_archives ul li {margin-bottom:10px;}
+.widget_archives ul li a{color:black;text-decoration:none;}
+
+
+.widget_category ul{padding-left: 20px;}
+.widget_category ul li {margin-bottom:10px;}
+.widget_category ul li a{color:black;text-decoration:none;}
+
+.widget_tag ul{padding-left: 20px;}
+.widget_tag ul li {margin-bottom:10px;}
+.widget_tag ul li a{color:black;text-decoration:none;}
+
+/** index.html 自定义模板样式结束 **/
+/** 博客详情页样式开始 **/
+.articles{margin-bottom:40px;}
+.post_comment{margin-top:20px;}
+.post_comment_title{font-size:18px;margin-bottom:10px;}
+.comment_area{padding:0 30px;}
+.content{width:100%;height:250px;}
+.post_comment_btn{text-align:left;margin-top:20px;}
+.fix{margin-bottom:13px;}
+.comment_list_panel{margin-top:20px;}
+/** 博客详情页样式结束 **/

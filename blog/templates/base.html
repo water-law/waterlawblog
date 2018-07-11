@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+    <style>
+        body {margin: 0;}
+        .header {display: -webkit-flex;display: flex;flex-direction: row;height: 68px;margin: 0 auto;}
+        .logo {-webkit-flex: 1; flex: 1;}
+        .navbar {-webkit-flex: 1; flex: 1;display: -webkit-flex;display: flex;flex-direction: row;}
+        .navbar-1 {-webkit-flex: 1; flex: 1;}
+        .navbar-2 {-webkit-flex: 1; flex: 1;}
+        .navbar-3 {-webkit-flex: 1; flex: 1;}
+        .user-info {-webkit-flex: 1; flex: 1;display: -webkit-flex;display: flex;flex-direction: row;}
+        .register {-webkit-flex: 1; flex: 1;}
+        .login {-webkit-flex: 1; flex: 1;}
+        .logout {-webkit-flex: 1; flex: 1;}
+        .content {display: -webkit-flex;display: flex;flex-direction: row;padding-bottom: 20px;}
+        @media (min-width: 1024px){.aside-left {-webkit-flex: 1; flex: 1;}}
+        .main {-webkit-flex: 2; flex: 2; border: 1px solid #f78a09; margin-right: 20px;}
+        .aside-right {-webkit-flex: 1; flex: 1;border: 1px solid #f78a09}
+        @media (min-width: 1024px){.blank {-webkit-flex: 1; flex: 1;}}
+        .footer {display: -webkit-flex;display: flex;flex-direction: row;-webkit-flex: 1; flex: 1;}
+    </style>
+</head>
+<body>
+    <div class="header">
+    <div class="blank"></div>
+        <div class="logo"><a href="{% url 'index' %}">WATERLAW</a></div>
+        <div class="navbar">
+            <div class="navbar-1"><a href="{% url 'index' %}">首页</a></div>
+            <div class="navbar-2"><a href="{% url 'publish' %}">写文章</a></div>
+            <div class="navbar-3"><a href="{% url 'webreader:webreader' %}">阅读</a></div>
+        </div>
+        <div class="user-info">
+            {% if not user.is_authenticated %}
+            <div class="register"><a href="{% url 'register' %}?next={{ request.path }}">注册</a></div>
+                <div class="login"><a href="{% url 'login' %}?next={{ request.path }}">登录</a></div>
+            {% else %}
+                <div class="logout"><span>{{ user.username }} </span><a href="{% url 'logout' %}?next={{ request.path }}">退出</a></div>
+            {% endif %}
+        </div>
+    <div class="blank"></div>
+    </div>
+
+    <div class="content">
+        <div class="aside-left"></div>
+        <div class="main">
+            {% block main %}
+            {% endblock main %}
+        </div>
+        <div class="aside-right">
+            {% block aside-right %}
+            {% endblock aside-right %}
+        </div>
+        <div class="blank"></div>
+    </div>
+    {% block pagination %}
+    {% endblock pagination %}
+    <div class="footer">
+        <div class="blank"></div>
+        <div class="copyright">@copyright belongs to jianping.zhang.</div>
+        <div class="blank"></div>
+    </div>
+</body>
+</html>

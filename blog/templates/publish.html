@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog_tags %}
+
+
+{% block title %}
+    Write Pager
+{% endblock title %}
+
+{% block main %}
+    <form action="/articles/publish" method="post">
+        {% csrf_token %}
+        <div>
+            <span>标题</span>
+            <span><input name="title"></span>
+        </div>
+        <hr />
+        <div>
+            <div>
+                <span>分类</span>
+                <span>
+                            {% get_all_categories as categories %}
+                            <select name="category" id="post_category" style="height: 24px;">
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}"
+                                            style="font-size:14px;">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+            </div>
+            <hr />
+            <div style="display: flex;align-content: baseline;">
+                <span style="margin-right: 4px;">标签</span>
+                <span>
+                            {% get_all_tags as tags %}
+                            <select name="tags" id="post_tags" multiple="multiple">
+                                {% for tag in tags %}
+                                    <option value="{{ tag.id }}" style="font-size:16px;">{{ tag.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+            </div>
+        </div>
+        <div id="layout">
+            <div id="use-editormd">
+                <textarea style="width: 733px; max-width: 733px; height: 960px;border: 1px solid black" name="body"></textarea>
+            </div>
+        </div>
+        <button style="float:left;padding:1px 2px;width: 60px;">预览</button>
+        <div>
+            <div>
+                <div>
+                    <div style="float:right;padding:1px 2px">
+                        <button>发布文章</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block aside-right %}
+    本网站已支持 Github 登录
+    {% if not user.is_authenticated %}
+        ，<a href="https://waterlaw.cn/users/login/?next=/">去登录</a>
+    {% endif %}
+{% endblock aside-right %}

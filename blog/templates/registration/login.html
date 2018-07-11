@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/dpl.css" rel="stylesheet">
+    <link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/bui.css" rel="stylesheet">
+    <style>
+    <!--outline （轮廓）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。-->
+    <!--登录字无法包含在 div 标签中-->
+        .main {}
+        .container {}
+        @media (min-width: 1024px){.login-user {float:right;}}
+        @media (max-width: 1024px){.login-user {float:left;margin-left: 5%;}}
+        .login-panel {padding:12px;}
+        .user-info .item input {width:288px;padding:10px;border: 1px solid #ddd;border-radius: 4px;font-size:14px;color: #aaa;outline: 0;}
+        .cus_txt {height:25px;}
+        .cus_btn {width:288px;height:30px;}
+
+
+    </style>
+</head>
+<body>
+<div class="main" style="margin-top:50px">
+    <div class="container">
+        <div class="login-user">
+            <h3 class="login-panel">WaterLaw 博客登录</h3>
+            <div class="user-info">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <ul>
+                        <li class="item">
+                            <input name="username" placeholder="登录帐号">
+                            <div class="cus_txt"></div>
+                        </li>
+                        <li class="item">
+                            <input type="password" name="password" placeholder="密码">
+                            <div class="cus_txt"></div>
+                        </li>
+                        <li>
+                            <button class="button button-info cus_btn">登录</button>
+                        </li>
+                        <li data-v-6cb98ece="" class="oauth-bg">
+                            <img data-v-6cb98ece="" title="GitHub" alt="GitHub" src="https://gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" class="oauth-btn">
+                        </li>
+                        <li>
+                            <input type="hidden" name="text" value="{{ next }}">
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.8.1.min.js"></script>
+<script src="https://g.alicdn.com/bui/seajs/2.3.0/sea.js"></script>
+<script src="https://g.alicdn.com/bui/bui/1.1.10/config.js"></script>
+<script src="{% static 'blog/js/register.js' %}"></script>
+</body>
+</html>

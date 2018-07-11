@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog_tags %}
+
+
+{% block title %}
+    {{ post.title }}
+{% endblock title %}
+
+{% block main %}
+    <form action="{% url 'update' post.pk %}" method="post">
+        {% csrf_token %}
+        <div>
+            <span>标题</span>
+            <span><input name="title" value="{{ post.title }}"></span>
+        </div>
+        <hr />
+        <div>
+            <div>
+                <span>分类</span>
+                <span>
+                            {% get_all_categories as categories %}
+                            <select name="category" id="post_category" style="height: 24px;">
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}"
+                                            style="font-size:16px;" {% if category == post.category %}selected="selected"{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+            </div>
+            <hr />
+            <div style="display: flex;align-content: baseline;">
+                <span style="margin-right: 4px;">标签</span>
+                <span>
+                            {% get_all_tags as tags %}
+                            <select name="tags" id="post_tags" multiple="multiple">
+                                {% for tag in tags %}
+                                    <option value="{{ tag.id }}" style="font-size:16px;" {% if tag in post.tags.all %}selected="selected"{% endif %}>{{ tag.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+            </div>
+        </div>
+        <div id="layout">
+            <div id="use-editormd">
+                <textarea style="width: 733px; max-width: 733px; height: 960px;border: 1px solid black" name="body">{{ post.body }}</textarea>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <div style="float:right;padding:1px 2px">
+                        <button>修改文章</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block aside-right %}
+    xxx
+{% endblock aside-right %}
