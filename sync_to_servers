@@ -62,11 +62,8 @@ base_excludes = [
     "*.swp",
     "list.tmp",
     "outside_sync_to_servers",
-<<<<<<< HEAD
     "./static/index/img/logo.png",
     "./static/auser/logo.png",
-=======
->>>>>>> f3e96bbb034ede1b7f10d8f923fc1240ae379b34
     "d.*js",
     "./mddbd/*/mddb.conf",
     "./frontend/*",
@@ -78,10 +75,7 @@ base_excludes = [
     "./worktable",
     "./AndroidApp",
     "whoosh_index",
-<<<<<<< HEAD
     "code-img"
-=======
-    "code-img",
     "file_handler.log*",
     ".git",
     ".gitignore",
@@ -89,7 +83,6 @@ base_excludes = [
     "README.md",
     "LICENSE",
     "logs",
->>>>>>> f3e96bbb034ede1b7f10d8f923fc1240ae379b34
 ]
 
 remotes = {
