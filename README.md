@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 在 /etc/nginx/conf.d
 
-sudo ln -s /home/zjp/waterlawblog/soya/conf/nginx/blog_187.conf /etc/nginx/conf.d/blog_187.conf
+sudo ln -s /home/zjp/waterlawblog/etc/nginx/conf/blog_187.conf /etc/nginx/conf.d/blog_187.conf
 
 重启 nginx
 
