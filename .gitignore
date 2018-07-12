@@ -1,18 +1,11 @@
-<<<<<<< HEAD
+.idea/
 .git/
-.idea/
-__pycache__/
-code-img/
-env/
-email.txt
-product.txt
-*.pyc
-=======
-.idea/
 .hg
 .hgignore
 env/
+code-img/
 __pycache__/
+*/__pycache__/
 *.pyc
 file_handler.log
 *.rdb
@@ -25,4 +18,3 @@ sites/init_data.py
 product.txt
 email.txt
 logs/
->>>>>>> f3e96bbb034ede1b7f10d8f923fc1240ae379b34
