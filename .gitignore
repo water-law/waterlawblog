@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .git/
 .idea/
 __pycache__/
@@ -6,3 +7,22 @@ env/
 email.txt
 product.txt
 *.pyc
+=======
+.idea/
+.hg
+.hgignore
+env/
+__pycache__/
+*.pyc
+file_handler.log
+*.rdb
+static/
+whoosh_index/
+celerybeat-schedule
+file_handler.log.*
+fabfile.py
+sites/init_data.py
+product.txt
+email.txt
+logs/
+>>>>>>> f3e96bbb034ede1b7f10d8f923fc1240ae379b34
