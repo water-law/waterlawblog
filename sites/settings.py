@@ -10,11 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import os
-<<<<<<< HEAD
 from etc.deploy import create_deploy_information, email_host_password
-=======
-from soya.deploy import create_deploy_information, email_host_password
->>>>>>> f3e96bbb034ede1b7f10d8f923fc1240ae379b34
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
