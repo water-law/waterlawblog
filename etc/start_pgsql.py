@@ -6,7 +6,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-from soya.deploy import create_deploy_information
+from etc.deploy import create_deploy_information
 
 
 def start_pgsql(deploy_info):

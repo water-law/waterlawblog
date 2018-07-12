@@ -1,0 +1,8 @@
+.git/
+.idea/
+__pycache__/
+code-img/
+env/
+email.txt
+product.txt
+*.pyc

@@ -11,7 +11,7 @@ import fcntl
 import gunicorn.app.base
 import struct
 
-from soya.deploy import create_deploy_information
+from etc.deploy import create_deploy_information
 
 
 def fix_sslwrap():

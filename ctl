@@ -12,7 +12,7 @@ import os
 import argparse
 import logging
 import time
-from soya.deploy import create_deploy_information
+from etc.deploy import create_deploy_information
 
 if sys.version_info[0] == 3:
     import builtins
@@ -116,11 +116,11 @@ def main():
     elif options.docker:
         hack_docker(deploy_info, options.docker)
     if options.command == "setup":
-        from soya.setup import main as command_main
+        from etc.setup import main as command_main
     elif options.command == "mddb":
-        from soya.start_mddb import main as command_main
+        from etc.start_mddb import main as command_main
     elif options.command == "redis":
-        from soya.start_redis import main as command_main
+        from etc.start_redis import main as command_main
     elif options.command == "touch_all":
         command_main = touchall
     elif options.command == "celery":
@@ -128,9 +128,9 @@ def main():
     elif options.command == "say_hello":
         command_main = say_hello
     elif options.command == "pgsql":
-        from soya.start_pgsql import main as command_main
+        from etc.start_pgsql import main as command_main
     elif options.command == "gunicorn":
-        from soya.run_gunicorn import main as command_main
+        from etc.run_gunicorn import main as command_main
     elif options.command == "bash" or options.command == "test":
         hack_docker(deploy_info, "gunicorn")
         command_main = run_bash

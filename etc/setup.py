@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-from soya.deploy import create_deploy_information, run_command
+from etc.deploy import create_deploy_information, run_command
 
 
 def main():
