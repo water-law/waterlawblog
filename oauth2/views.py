@@ -22,9 +22,10 @@ def rand_username():
 def callback(request):
     if not request.GET:
         return HttpResponseBadRequest
+    host = request.get_host()
     app_key = "5ce2826552d2560621ca"
     app_secret = "3ac3c4fdc97cb08e1dfa5e0d3b0463ecb652fc86"
-    redirect_uri = "https://waterlaw.cn/github/oauth/callback"
+    redirect_uri = "https://%s/github/oauth/callback" % host
     client = APIClient(app_key=app_key, app_secret=app_secret, redirect_uri=redirect_uri)
     code = request.GET.get("code")
     d= client.request_access_token(code=code)

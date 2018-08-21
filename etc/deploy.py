@@ -116,8 +116,8 @@ class EarthDeployInformation(BaseDeployInformation):
     debug = False
     net_ip = ["47.97.160.187"]
 
-    sitename = ("waterlaw.cn",)
-    static_sitename = ("waterlaw.cn",)
+    sitename = ("waterlaw.top",)
+    static_sitename = ("waterlaw.top",)
 
 
 def choice_deploy():

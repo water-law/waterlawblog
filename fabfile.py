@@ -2,10 +2,10 @@ from fabric.api import env, run
 from fabric.operations import sudo
 
 
-SSH_REPO = 'ssh://zjp@waterlaw.cn//home/zjp/waterlawblog'
+SSH_REPO = 'ssh://zjp@waterlaw.top//home/zjp/waterlawblog'
 
 env.user = 'zjp'
-env.hosts = ['waterlaw.cn']
+env.hosts = ['waterlaw.top']
 env.port = '22'
 
 
@@ -19,7 +19,7 @@ def deploy():
         ./env/bin/python3 manage.py collectstatic --noinput &&
         ./env/bin/python3 manage.py rebuild_index &&
         ./env/bin/python3 manage.py migrate &&
-        ./env/bin/gunicorn --bind unix:/tmp/waterlaw.cn.socket sites.wsgi:application
+        ./env/bin/gunicorn --bind unix:/tmp/waterlaw.top.socket sites.wsgi:application
         """.format(source_folder))
-    # sudo('restart gunicorn-waterlaw.cn')
+    # sudo('restart gunicorn-waterlaw.top')
     sudo('service nginx reload')

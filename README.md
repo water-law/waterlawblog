@@ -65,4 +65,4 @@ nginx -s reload
 
 ./manage.py runserver
 
-访问 [waterlaw.cn](https://waterlaw.cn/)
+访问 [waterlaw.top](https://waterlaw.top/)
