@@ -25,7 +25,7 @@ SECRET_KEY = '_(760jtp_nb7$!tb#fh6s-qcg#^1k2bnqljqk=w88jtr9a(wxl'
 DEPLOY_INFO = deploy_info = create_deploy_information()
 DEBUG = deploy_info.debug
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'waterlaw.cn', 'waterlaw.top']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.waterlaw.top', 'waterlaw.top']
 REDIS_CONNECTION = "redis://{}:{}/0".format(*deploy_info.redis_address)
 
 # Application definition
