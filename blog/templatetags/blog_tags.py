@@ -6,13 +6,9 @@ register = template.Library()
 
 
 @register.simple_tag
-def get_recent_posts(username=None, num=5):
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        return Post.objects.none()
+def get_recent_posts(num=5):
     """ @register.simple_tag: 注册这个函数为模板标签 """
-    return Post.objects.filter(author=user)[:num]
+    return Post.objects.all()[:num]
 
 
 @register.simple_tag
