@@ -64,6 +64,6 @@ $(function () {
         })
     });
     $(".oauth-btn").click(function () {
-        window.location.href = "https://github.com/login/oauth/authorize?client_id=5ce2826552d2560621ca&redirect_uri=https://waterlaw.top/github/oauth/callback"
+        window.location.href = "https://github.com/login/oauth/authorize?client_id=5ce2826552d2560621ca&redirect_uri=https://www.waterlaw.top/github/oauth/callback"
     })
 });
