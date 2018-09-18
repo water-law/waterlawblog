@@ -18,3 +18,5 @@ sites/init_data.py
 product.txt
 email.txt
 logs/
+product.txt
+pgdata/
