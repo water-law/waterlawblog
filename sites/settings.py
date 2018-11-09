@@ -25,6 +25,8 @@ SECRET_KEY = '_(760jtp_nb7$!tb#fh6s-qcg#^1k2bnqljqk=w88jtr9a(wxl'
 DEPLOY_INFO = deploy_info = create_deploy_information()
 DEBUG = deploy_info.debug
 
+PGSQL_ADDRESS = deploy_info.pgsql_address
+
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.waterlaw.top', 'waterlaw.top']
 REDIS_CONNECTION = "redis://{}:{}/0".format(*deploy_info.redis_address)
 
@@ -114,9 +116,13 @@ DATABASES = {
 
         'NAME': 'blog',  # Your db name, Or path to database file if using sqlite3
 
-        'HOST': '',  # Your db host, set to empty string('') for default for localhost,  Not used with sqlite3
+        'USER': 'postgres',
 
-        'PORT': '',  # Your db port, set to empty string('') for default, Not used with sqlite3
+        'PASSWORD': 'postgres',
+        
+        'HOST': PGSQL_ADDRESS[0],  # Your db host, set to empty string('') for default for localhost,  Not used with sqlite3
+
+        'PORT': PGSQL_ADDRESS[1],  # Your db port, set to empty string('') for default, Not used with sqlite3
     }
 }
 

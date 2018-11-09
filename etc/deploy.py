@@ -120,6 +120,17 @@ class EarthDeployInformation(BaseDeployInformation):
     static_sitename = ("waterlaw.top",)
 
 
+class Aliyun228DeployInformation(BaseDeployInformation):
+    name = "47.104.230.228"
+    debug = False
+    net_ip = ["47.104.230.228"]
+
+    sitename = ("waterlaw.top",)
+    static_sitename = ("waterlaw.top",)
+
+    pgsql_address = ("pgsql", 5432)
+
+
 def choice_deploy():
     local_ip = get_ip()
     deploy_info = None
@@ -136,16 +147,17 @@ def choice_deploy():
 
 
 def create_deploy_information():
-    product_txt = "/home/zjp/waterlawblog/product.txt"
+    product_txts = ["/home/zjp/waterlawblog/product.txt", "/home/code/product.txt"]
 
     deploy_info = None
-    if os.path.exists(product_txt):
-        type_name = io.open(product_txt, "r", encoding="utf-8").read().strip()
-        for obj_name in globals():
-            if obj_name.endswith("DeployInformation"):
-                if globals()[obj_name].name == type_name:
-                    deploy_info = globals()[obj_name]()
-                    break
+    for product_txt in product_txts:
+        if os.path.exists(product_txt):
+            type_name = io.open(product_txt, "r", encoding="utf-8").read().strip()
+            for obj_name in globals():
+                if obj_name.endswith("DeployInformation"):
+                    if globals()[obj_name].name == type_name:
+                        deploy_info = globals()[obj_name]()
+                        break
 
     if not deploy_info:
         deploy_info = choice_deploy()
@@ -155,7 +167,8 @@ def create_deploy_information():
 
 
 def email_host_password():
-    email_txt = "/home/zjp/waterlawblog/email.txt"
-    if os.path.exists(email_txt):
-        return io.open(email_txt, mode="r", encoding="utf-8").read().strip()
+    email_txts = ["/home/zjp/waterlawblog/email.txt", "/home/code/email.txt"]
+    for email_txt in email_txts:
+        if os.path.exists(email_txt):
+            return io.open(email_txt, mode="r", encoding="utf-8").read().strip()
     return ""

@@ -87,6 +87,7 @@ base_excludes = [
 
 remotes = {
     "187": "zjp@47.97.160.187:/home/zjp/waterlawblog/",
+    "228": "root@47.104.230.228:/home/code/"
 }
 
 

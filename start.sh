@@ -1,1 +1,1 @@
-. ../pysp/bin/activate && python3 manage.py runserver 0.0.0.0:8000
+docker run -it --rm --name waterlaw.top --link pgsql:pgsql -v /home/code:/home/code -p 8000:8000 waterlaw:top /bin/bash ./runserver.sh

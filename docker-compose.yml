@@ -2,9 +2,7 @@ version: '2'
 services:
   db:
     image: postgres:9.6
-    container_name: psql
-    ports:
-      - "5432:5432"
+    container_name: pgsql
     environment:
       POSTGRES_PASSWORD: postgres
       PGDATA: /var/lib/postgresql/data/pgdata
@@ -12,7 +10,7 @@ services:
       - ~/pgdata:/var/lib/postgresql/data/pgdata
   web:
     build: .
-    command: ./start.sh
+    command: /bin/bash ./runserver.sh
     volumes:
       - /home/code:/home/code
     ports:
