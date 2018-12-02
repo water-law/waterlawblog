@@ -1,0 +1,1 @@
+docker exec -it pgsql /bin/bash /home/code/postgres.sh

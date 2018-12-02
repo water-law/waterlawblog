@@ -7,13 +7,15 @@ services:
       POSTGRES_PASSWORD: postgres
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ~/pgdata:/var/lib/postgresql/data/pgdata
+      - /root/pgdata:/var/lib/postgresql/data/pgdata
+      - /home/code:/home/code
   web:
     build: .
-    command: /bin/bash ./runserver.sh
+    container_name: django
+    command: /bin/bash /home/code/runserver.sh
     volumes:
       - /home/code:/home/code
     ports:
       - "8000:8000"
-    depends_on:
+    links:
       - db
