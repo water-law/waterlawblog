@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres import fields
+# from django.contrib.postgres import fields
 import django.utils.timezone as timezone
 from sites.constant import SignType, SignUse, TemplateType
 
@@ -30,7 +30,7 @@ class SmsTemplate(models.Model):
     template_code = models.CharField(max_length=30, verbose_name="模版CODE")
     template_type = models.SmallIntegerField(default=TemplateType.Default.code, choices=TemplateType.all(), verbose_name="模版类型")
     price = models.FloatField(verbose_name="每条短信的价格")
-    params = fields.JSONField(default=dict, verbose_name="模板参数")
+    params = models.TextField(verbose_name="模板参数", blank=True)
     content = models.TextField(verbose_name="模版内容", blank=True)
     enabled = models.BooleanField(default=True, verbose_name="是否启用")
 
@@ -42,7 +42,7 @@ class SmsMessage(models.Model):
     phone_numbers = models.CharField(max_length=30, verbose_name="短信接收号码")
     sign = models.ForeignKey(SmsSign, verbose_name="短信签名")
     template = models.ForeignKey(SmsTemplate, verbose_name="短信模板")
-    params = fields.JSONField(default=dict, verbose_name="消息参数")
+    params = models.TextField(verbose_name="消息参数", blank=True)
     up_extend_code = models.CharField(max_length=20, verbose_name="上行短信扩展码", blank=True)
     out_id = models.CharField(max_length=30, verbose_name="外部流水扩展字段", blank=True)
     code = models.CharField(max_length=20, verbose_name="短信接口返回码")

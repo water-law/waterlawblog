@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import os
-from etc.deploy import create_deploy_information, email_host_password
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,8 +21,32 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_(760jtp_nb7$!tb#fh6s-qcg#^1k2bnqljqk=w88jtr9a(wxl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEPLOY_INFO = deploy_info = create_deploy_information()
-DEBUG = deploy_info.debug
+GITHUB = True  # github page + sqlite
+ENABLED_SQLITE3 = False
+WIN_LOCAL = False  # windows + pgsql
+if GITHUB:
+    class GithubDeployInformation:
+        pgsql_address = ("", "")
+        redis_address = ("127.0.0.1", "6379")
+
+    def email_host_password():
+        return "ix508ij"
+    DEPLOY_INFO = deploy_info = GithubDeployInformation()
+    DEBUG = True
+    ENABLED_SQLITE3 = True
+elif WIN_LOCAL:
+    class WinDeployInformation:
+        pgsql_address = ("127.0.0.1", "5432")
+        redis_address = ("127.0.0.1", "6379")
+
+    def email_host_password():
+        return "ix508ij"
+    DEPLOY_INFO = deploy_info = WinDeployInformation()
+    DEBUG = True
+else:
+    from etc.deploy import create_deploy_information, email_host_password
+    DEPLOY_INFO = deploy_info = create_deploy_information()
+    DEBUG = deploy_info.debug
 
 PGSQL_ADDRESS = deploy_info.pgsql_address
 
@@ -112,9 +135,9 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2','mysql', 'sqlite3' or 'oracle'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2' if not ENABLED_SQLITE3 else 'django.db.backends.sqlite3',
 
-        'NAME': 'blog',  # Your db name, Or path to database file if using sqlite3
+        'NAME': 'blog' if not ENABLED_SQLITE3 else os.path.join(BASE_DIR, 'blog.db'),
 
         'USER': 'postgres',
 
