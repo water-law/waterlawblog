@@ -95,7 +95,7 @@ class BaseDeployInformation(object):
     @staticmethod
     def get_docker_image(component):
         if component in ["pgsql", "redis", "gunicorn", "celery"]:
-            return "kuaiyun:earth"
+            return "waterlaw:top"
         else:
             return ""
 
@@ -147,7 +147,7 @@ def choice_deploy():
 
 
 def create_deploy_information():
-    product_txts = ["/home/zjp/waterlawblog/product.txt", "/home/code/product.txt"]
+    product_txts = ["/home/code/product.txt"]
 
     deploy_info = None
     for product_txt in product_txts:
@@ -167,7 +167,7 @@ def create_deploy_information():
 
 
 def email_host_password():
-    email_txts = ["/home/zjp/waterlawblog/email.txt", "/home/code/email.txt"]
+    email_txts = ["/home/code/email.txt"]
     for email_txt in email_txts:
         if os.path.exists(email_txt):
             return io.open(email_txt, mode="r", encoding="utf-8").read().strip()

@@ -1,1 +1,0 @@
-docker run -it --rm --name waterlaw.top --link pgsql:pgsql -v E:\projects\waterlawblog:/home/code -p 8000:8000 waterlaw:top /bin/bash ./runserver.sh

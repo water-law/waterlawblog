@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import os
+import platform
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,26 +22,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_(760jtp_nb7$!tb#fh6s-qcg#^1k2bnqljqk=w88jtr9a(wxl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-GITHUB = True  # github page + sqlite
-ENABLED_SQLITE3 = False
-WIN_LOCAL = False  # windows + pgsql
-if GITHUB:
-    class GithubDeployInformation:
+ENABLED_SQLITE3 = True
+if ENABLED_SQLITE3:
+    class SqliteDeployInformation:
         pgsql_address = ("", "")
         redis_address = ("127.0.0.1", "6379")
 
     def email_host_password():
-        return "ix508ij"
-    DEPLOY_INFO = deploy_info = GithubDeployInformation()
+        return "###"  # 邮箱授权码
+    DEPLOY_INFO = deploy_info = SqliteDeployInformation()
     DEBUG = True
-    ENABLED_SQLITE3 = True
-elif WIN_LOCAL:
+elif platform.system() == "Windows":
     class WinDeployInformation:
         pgsql_address = ("127.0.0.1", "5432")
         redis_address = ("127.0.0.1", "6379")
 
     def email_host_password():
-        return "ix508ij"
+        return "###"  # 邮箱授权码
     DEPLOY_INFO = deploy_info = WinDeployInformation()
     DEBUG = True
 else:
@@ -64,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blogapi.apps.BlogapiConfig',
     'haystack',
+    'gunicorn',
     'blockchain.apps.BlockchainConfig',
     'blog.apps.BlogConfig',
     'webreader.apps.WebreaderConfig',

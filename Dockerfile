@@ -7,8 +7,3 @@ RUN apt-get update && \
 	&& apt-get clean \
 	&& apt-get autoclean \
 	&& rm -rf /var/lib/apt/lists/*
-
-RUN pip3 install virtualenv && virtualenv -p /usr/bin/python3 /home/pysp
-ADD requirements.txt /tmp/requirements.txt
-RUN . /home/pysp/bin/activate && pip3 install -r /tmp/requirements.txt && mkdir -p /home/code
-WORKDIR /home/code
