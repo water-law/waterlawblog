@@ -100,3 +100,7 @@ python ./manage.py runserver
 ```
 
 访问 [waterlaw.top](https://waterlaw.top)   网站服务器到期了， 没有续费
+
+### 帮助
+
+如果你阅读此文档时仍有疑问，请阅读项目的 [项目 Wiki](https://github.com/water-law/waterlawblog/wiki/项目-wiki) 
