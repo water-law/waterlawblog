@@ -2,16 +2,25 @@
 <!DOCTYPE html>
 <html lang="zh-cn" class="do-cke">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/dpl.css" rel="stylesheet">
+    <link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/bui.css" rel="stylesheet">
+    <style>
+        .send_code {display:inline-block; width:120px; height:26px; line-height:26px;background-color:#dc3c00;text-align:center;color:#fff;}
+        .auth_info {height:40px;background-color:#ff6d28;text-align:center;line-height:40px;font-size:16px;color:#fff;}
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152710976-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-152710976-1');
+    </script>
 </head>
-<meta charset="utf-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-<link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/dpl.css" rel="stylesheet">
-<link href="https://g.alicdn.com/bui/bui/1.1.21/css/bs3/bui.css" rel="stylesheet">
-<style>
-    .send_code {display:inline-block; width:120px; height:26px; line-height:26px;background-color:#dc3c00;text-align:center;color:#fff;}
-    .auth_info {height:40px;background-color:#ff6d28;text-align:center;line-height:40px;font-size:16px;color:#fff;}
-</style>
 <body>
 {% if message %}
     <div class="auth_info">
