@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.core.cache import cache
 
-EXPIRE_MINUTES = getattr(settings, 'REST_FRAMEWORK_TOKEN_EXPIRE_MINUTES', 1)
+EXPIRE_MINUTES = getattr(settings, 'REST_FRAMEWORK_TOKEN_EXPIRE_MINUTES', 4 * 60)
 
 
 # 过期 token 认证

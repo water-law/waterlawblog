@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'', include('blog.urls')),
     url(r'', include('blockchain.views')),
     url(r'api/v1/', include('blogapi.api_v1')),
-    url(r'api/v2/', include('blogapi.api_v2')),
     url(r'', include('webreader.views')),
     url(r'^search/', include('haystack.urls')),
     url(r'', include('oauth2.views')),

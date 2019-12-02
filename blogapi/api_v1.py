@@ -3,24 +3,26 @@ import re
 import base64
 import datetime
 import pytz
-from django.conf.urls import url, include
+from django.conf.urls import url
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.conf import settings
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.generics import ListAPIView, ListCreateAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+
+from blogapi.authentication import ExpiringTokenAuthentication
 from blogapi.serializers import PhoneSerializer, RegisterSerializer, PostSerializer, \
     PublishSerializer, CommentSerializer
 from blog.models import Post, Category, Tag, User
 from blog.verf_mobile_code import send_code, generate_verification_code
 from blog.verf_image_code import get_random_code, generate_random_code
 
-EXPIRE_MINUTES = getattr(settings, 'REST_FRAMEWORK_TOKEN_EXPIRE_MINUTES', 1)
+EXPIRE_MINUTES = getattr(settings, 'REST_FRAMEWORK_TOKEN_EXPIRE_MINUTES', 4 * 60)
 
 
 class ObtainExpiringAuthToken(ObtainAuthToken):
@@ -45,16 +47,9 @@ class ObtainExpiringAuthToken(ObtainAuthToken):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PostView(ListAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-    permission_classes = (IsAuthenticatedOrReadOnly,)
-
-
 class MobileCodeView(APIView):
     """ 生成验证码 """
-    permission_classes = ()
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
 
     def post(self, request, format=None):
         serializer = PhoneSerializer(data=request.data)
@@ -101,6 +96,7 @@ class RegisterView(APIView):
 # FIXME:
 class PublishView(APIView):
     """ 发布文章 """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
 
     def post(self, request, format=None):
         serializer = PublishSerializer(data=request.data)
@@ -130,8 +126,7 @@ class PublishView(APIView):
 
 class PostDetailView(APIView):
     """ 跳转到文章页面 """
-
-    permission_classes = ()
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
 
     def get(self, request, pk, format=None):
         post = self.get_object(pk)
@@ -147,12 +142,18 @@ class PostDetailView(APIView):
 
 
 class ArticleListCreateAPIView(ListCreateAPIView):
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
     serializer_class = PostSerializer
     queryset = Post.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        return super(ArticleListCreateAPIView, self).get_queryset().filter(author=user)
 
 
 class CommentView(APIView):
     """ 评论文章页面 """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
 
     def post(self, request, format=None):
         serializer = CommentSerializer(data=request.data)
@@ -164,8 +165,7 @@ class CommentView(APIView):
 
 class CaptchaImageView(APIView):
     """ 生成图片验证码 """
-
-    permission_classes = ()
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
 
     def get(self, request, format=None):
         image_path = get_image_path(request)
@@ -183,10 +183,9 @@ class CaptchaImageView(APIView):
 
 class ArchivesView(ListAPIView):
     """ 按月归档文章 """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
-    permission_classes = ()
 
     def get_queryset(self):
         year = self.kwargs.get('year')
@@ -196,10 +195,9 @@ class ArchivesView(ListAPIView):
 
 class CategoryView(ListAPIView):
     """ 按分类归档文章 """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
-    permission_classes = ()
 
     def get_queryset(self):
         category = get_object_or_404(Category, pk=self.kwargs.get('pk'))
@@ -208,10 +206,9 @@ class CategoryView(ListAPIView):
 
 class TagView(ListAPIView):
     """ 按标签归档文章 """
+    authentication_classes = (SessionAuthentication, BasicAuthentication, ExpiringTokenAuthentication,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
-    permission_classes = ()
 
     def get_queryset(self):
         tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
@@ -234,7 +231,6 @@ urlpatterns = [
     # url(r'^api-token-refresh/', refresh_jwt_token),
     # token 丢失或过期则重新登录， 登陆时获取 token, 以后每次请求都带上 token, 验证 token 的有效性
     url(r'^api-token/$', ObtainExpiringAuthToken.as_view()),
-    url(r'^articles$', PostView.as_view()),
     url(r'^accounts/register/vmobile$', MobileCodeView.as_view()),
     url(r'^accounts/register$', RegisterView.as_view()),
 
